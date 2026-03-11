@@ -13,13 +13,13 @@ const LOCALE_EN := "en"
 
 const TEXT := {
 	"hr": {
-		"controls": "LMB Kretanje | RMB Interakcija | L Jezik | H Sakrij/Prikaži HUD | C Očisti poruku | F5/F9 Save/Load | R Reset",
-		"hud_player": "Igrač HP: %d/%d",
+		"controls": "LMB Kretanje | RMB NPC Razgovor/Napad | RMB Chest Loot | L Jezik | F5 Save | F9 Load | R Reset",
+		"hud_player": "Player HP: %d/%d",
 		"hud_npc": "NPC HP: %d/%d",
-		"hud_inventory": "Inventar: %s",
-		"hud_inventory_empty": "Inventar: (prazan)",
-		"hud_quest_active": "Zadatak: Opljačkaj škrinju i porazi NPC-a",
-		"hud_quest_done": "Zadatak: Vertical Slice dovršen",
+		"hud_inventory": "Inventory: %s",
+		"hud_inventory_empty": "Inventory: (prazan)",
+		"hud_quest_active": "Quest: Opljačkaj škrinju i porazi NPC-a",
+		"hud_quest_done": "Quest: Vertical Slice dovršen",
 		"too_far_talk": "Priđi NPC-u da razgovaraš.",
 		"too_far_loot": "Priđi škrinji da pokupiš predmet.",
 		"npc_down": "NPC je poražen.",
@@ -35,13 +35,10 @@ const TEXT := {
 		"load_error": "Greška pri učitavanju: %s",
 		"save_error": "Greška pri spremanju: %s",
 		"reset_ok": "Stanje vraćeno na početak.",
-		"hud_hidden": "HUD sakriven (H za prikaz).",
-		"hud_shown": "HUD prikazan.",
-		"dialogue_cleared": "Poruka očišćena.",
 		"locale_switched": "Jezik prebačen: HR"
 	},
 	"en": {
-		"controls": "LMB Move | RMB Interact | L Language | H Hide/Show HUD | C Clear message | F5/F9 Save/Load | R Reset",
+		"controls": "LMB Move | RMB NPC Talk/Attack | RMB Chest Loot | L Language | F5 Save | F9 Load | R Reset",
 		"hud_player": "Player HP: %d/%d",
 		"hud_npc": "NPC HP: %d/%d",
 		"hud_inventory": "Inventory: %s",
@@ -63,9 +60,6 @@ const TEXT := {
 		"load_error": "Load failed: %s",
 		"save_error": "Save failed: %s",
 		"reset_ok": "State reset to defaults.",
-		"hud_hidden": "HUD hidden (press H to show).",
-		"hud_shown": "HUD shown.",
-		"dialogue_cleared": "Message cleared.",
 		"locale_switched": "Language switched: EN"
 	}
 }
@@ -75,7 +69,6 @@ const TEXT := {
 @onready var _npc: StaticBody3D = $NPC
 @onready var _chest: StaticBody3D = $LootChest
 
-@onready var _hud: Control = $CanvasLayer/HUD
 @onready var _dialogue_label: Label = $CanvasLayer/HUD/VBoxContainer/Dialogue
 @onready var _controls_label: Label = $CanvasLayer/HUD/VBoxContainer/Instructions
 @onready var _player_hp_label: Label = $CanvasLayer/HUD/VBoxContainer/PlayerHP
@@ -100,8 +93,8 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
-		if _handle_hotkeys(event):
-			return
+		_handle_hotkeys(event)
+		return
 
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -110,28 +103,17 @@ func _unhandled_input(event: InputEvent) -> void:
 			_handle_context_interaction(event.position)
 
 func _validate_scene_setup() -> bool:
-	return _camera != null and _player != null and _npc != null and _chest != null and _dialogue_label != null and _hud != null
+	return _camera != null and _player != null and _npc != null and _chest != null and _dialogue_label != null
 
-func _handle_hotkeys(event: InputEventKey) -> bool:
+func _handle_hotkeys(event: InputEventKey) -> void:
 	if event.keycode == KEY_L:
 		_toggle_locale()
-		return true
-	if event.keycode == KEY_F5:
+	elif event.keycode == KEY_F5:
 		_save_game_state()
-		return true
-	if event.keycode == KEY_F9:
+	elif event.keycode == KEY_F9:
 		_load_game_state()
-		return true
-	if event.keycode == KEY_R:
+	elif event.keycode == KEY_R:
 		_reset_state()
-		return true
-	if event.keycode == KEY_H:
-		_toggle_hud()
-		return true
-	if event.keycode == KEY_C:
-		_set_dialogue(_t("dialogue_cleared"))
-		return true
-	return false
 
 func _screen_to_ground(screen_position: Vector2) -> Vector3:
 	var from: Vector3 = _camera.project_ray_origin(screen_position)
@@ -207,13 +189,6 @@ func _toggle_locale() -> void:
 	_set_dialogue(_t("locale_switched"))
 	_refresh_hud()
 
-func _toggle_hud() -> void:
-	_hud.visible = not _hud.visible
-	if _hud.visible:
-		_set_dialogue(_t("hud_shown"))
-	else:
-		_set_dialogue(_t("hud_hidden"))
-
 func _refresh_hud() -> void:
 	_controls_label.text = _t("controls")
 	_player_hp_label.text = _t("hud_player") % [_player_hp, PLAYER_MAX_HP]
@@ -264,7 +239,7 @@ func _load_game_state() -> void:
 	_player_hp = int(state.get("player_hp", PLAYER_MAX_HP))
 	_npc_hp = int(state.get("npc_hp", NPC_MAX_HP))
 	_dialogue_index = int(state.get("dialogue_index", 0))
-	_player.global_position = state.get("player_pos", Vector3(0.0, 0.9, 0.0))
+	_player.global_position = state.get("player_pos", Vector3.ZERO)
 
 	_inventory.clear()
 	for item in state.get("inventory", []):
@@ -284,7 +259,7 @@ func _reset_state() -> void:
 	_npc_hp = NPC_MAX_HP
 	_inventory.clear()
 	_chest_loot = ["Iron Sword", "Health Potion"]
-	_player.global_position = Vector3(0.0, 0.9, 0.0)
+	_player.global_position = Vector3.ZERO
 	_refresh_hud()
 	_set_dialogue(_t("reset_ok"))
 

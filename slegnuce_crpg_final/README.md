@@ -24,8 +24,6 @@ This folder is a playable Godot 4.6 **CRPG vertical-slice prototype**.
 - **RMB on NPC:** attack (close), talk (mid), or hint (far).
 - **RMB on Chest:** loot item if in range.
 - **L:** switch locale between Croatian/English UI text.
-- **H:** hide/show HUD overlay (for clean world testing).
-- **C:** clear current dialogue/status message.
 - **F5:** save game state to `user://savegame.dat` (versioned payload).
 - **F9:** load game state from `user://savegame.dat` with compatibility checks.
 - **R:** reset state to defaults.
@@ -75,10 +73,3 @@ If GitHub asks **Current / Incoming / Both**:
 3. Add enemy AI turn logic.
 4. Move localization text into external data resource.
 5. Create in-engine teaser capture scene and voiceover pipeline.
-
-
-## Debug fixes applied
-
-- HUD now uses `mouse_filter = Ignore`, so UI no longer blocks world clicks.
-- Player spawn height is fixed above ground to avoid half-sunken visuals.
-- Added explicit HUD toggle (`H`) and message clear (`C`) so testing is never blocked by overlay text.
