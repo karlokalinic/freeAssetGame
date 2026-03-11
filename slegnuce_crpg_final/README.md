@@ -1,87 +1,75 @@
 # slegnuce_crpg_final (Godot 4.6 prototype)
 
-Playable Godot 4.6 vertical slice with clear startup chronology:
+This folder is a playable Godot 4.6 **CRPG vertical-slice prototype**.
 
-1. **Main Menu**
-2. **Settings check**
-3. **New Game**
-4. **In-game minimal HUD + expandable tutorial panel**
+## Included right now
 
-## Scene flow
+- `project.godot` — Godot project settings and main scene entrypoint.
+- `scenes/Main.tscn` — test map with:
+  - ground plane
+  - player pawn
+  - NPC target with collider
+  - loot chest with collider
+  - top-down camera
+  - HUD labels for controls, HP, inventory, and quest status
+- `scripts/main.gd` — gameplay director (movement input, interaction routing, combat, loot, UI refresh, localization).
+- `scripts/player_controller.gd` — movement logic for the player pawn.
+- `scripts/save_manager.gd` — versioned binary save/load wrapper with validation and error reporting.
+- `SAVE_SYSTEM.md` — focused save architecture notes.
+- `assets/` — drop imported Sketchfab models/textures/audio here.
 
-- `scenes/MainMenu.tscn` (startup scene)
-- `scenes/Game.tscn` (gameplay)
+## Controls
 
-## Modular backend architecture
+- **LMB:** move player to clicked ground point.
+- **RMB on NPC:** attack (close), talk (mid), or hint (far).
+- **RMB on Chest:** loot item if in range.
+- **L:** switch locale between Croatian/English UI text.
+- **F5:** save game state to `user://savegame.dat` (versioned payload).
+- **F9:** load game state from `user://savegame.dat` with compatibility checks.
+- **R:** reset state to defaults.
 
-- `scripts/main.gd` — gameplay orchestrator only.
-- `scripts/main_menu.gd` — main menu + settings UI wiring.
-- `scripts/player_controller.gd` — click-to-move character controller.
-- `scripts/save_manager.gd` — versioned save API.
-- `scripts/game/constants.gd` — constants + localized text DB.
-- `scripts/game/translator.gd` — localization helper.
-- `scripts/game/game_state.gd` — runtime state model and serialization payload mapping.
-- `scripts/game/hud_controller.gd` — HUD rendering, animated show/hide, drag-to-move tutorial panel.
-- `scripts/game/settings_manager.gd` — shared settings persistence/apply layer.
-- `scripts/game/spatial_audio_trigger.gd` — drop-in 3D trigger audio source.
-- `scripts/game/idle_bob.gd` — lightweight visual idle animation.
+## Binary save/load implementation (fact-checked)
 
-## UX polish implemented
+Save/load uses Godot Variant binary serialization APIs:
 
-- **Tutorial panel** can be:
-  - opened/closed via button and `TAB`,
-  - dragged around with mouse,
-  - animated fade in/out,
-  - cleared with `Clear Msg`.
-- **Cursor interaction feedback**:
-  - cursor switches to pointing hand when hovering NPC/chest.
-- **Idle animation**:
-  - NPC/chest use subtle bob + rotate movement.
+- `var_to_bytes()` to serialize game state dictionary.
+- `bytes_to_var()` to deserialize state.
+- `FileAccess.store_buffer()` and `FileAccess.get_buffer()` for file I/O.
 
-## Environmental audio feature (3D trigger)
+Reference: Godot docs (Binary Serialization API):
+https://docs.godotengine.org/en/stable/tutorials/io/binary_serialization_api.html
 
-A reusable trigger is in scene (`DoorbellTrigger`) and can be placed anywhere.
+## Import and run
 
-How to use:
-1. Select `DoorbellTrigger/AudioStreamPlayer3D`.
-2. Drag & drop any audio stream resource into `stream`.
-3. Move `DoorbellTrigger` anywhere in 3D world.
-4. Set trigger radius on `DoorbellTrigger/CollisionShape3D`.
+1. Open Godot 4.6.
+2. Click **Import**.
+3. Select `slegnuce_crpg_final`.
+4. Run project (`F5`).
 
-When `Player` enters trigger area, audio plays (one-shot by default).
+## Asset workflow notes
 
-## Audio + Graphics settings (Linux & Windows friendly)
+- Keep original filenames when importing from Sketchfab so source tracking stays easy.
+- Recommended structure:
+  - `assets/characters/`
+  - `assets/environment/`
+  - `assets/props/`
+  - `assets/audio/voice/`
+- Prefer `.glb` for model import speed and consistent scene setup in Godot.
 
-Main menu settings now include:
-- Fullscreen
-- Borderless
-- VSync
-- 3D Render Scale (performance/quality tradeoff)
-- Master / Environment / SFX volume sliders
+## Merge conflict quick rule
 
-Settings persist in `user://settings.cfg` and are applied both in menu and gameplay.
+If GitHub asks **Current / Incoming / Both**:
 
-## Controls (Game scene)
+- Pick **Current** when your branch has the intended latest gameplay logic.
+- Pick **Incoming** when the other branch clearly has the wanted fix.
+- Pick **Both** for additive content, then clean duplicates and re-save scenes in Godot.
 
-- **LMB:** move player
-- **RMB on NPC:** talk/attack by range
-- **RMB on chest:** loot by range
-- **TAB:** show/hide tutorial panel
-- **H:** show/hide entire HUD
-- **C:** clear message
-- **L:** switch language HR/EN
-- **F5/F9:** save/load
-- **R:** reset state
+(Full details remain in `GITHUB_MERGE_CONFLICT_GUIDE.md`.)
 
-## Save system
+## Next iteration targets
 
-- `scripts/save_manager.gd` stores versioned payload in `user://savegame.dat`.
-- Uses `var_to_bytes()` / `bytes_to_var()` and `FileAccess` buffer methods.
-- Reference:
-  - https://docs.godotengine.org/en/stable/tutorials/io/binary_serialization_api.html
-
-## Integrated models from repository
-
-- `snow_town.glb` (environment)
-- `sara_-_lod_lady_character.glb` (player visual)
-- `business_man.glb` (NPC visual)
+1. Replace placeholders with real Sketchfab models and animation trees.
+2. Add click-to-attack animation events and VFX/SFX hooks.
+3. Add enemy AI turn logic.
+4. Move localization text into external data resource.
+5. Create in-engine teaser capture scene and voiceover pipeline.
