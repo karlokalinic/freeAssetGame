@@ -16,7 +16,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.06, 0.08, 0.11, 1)
+color = Color(0.04, 0.06, 0.1, 1)
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -33,18 +33,18 @@ theme_override_constants/separation = 10
 
 [node name="Title" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "slegnuce_crpg_final"
+theme_override_font_sizes/font_size = 34
+text = "Slegnuće: Raspuklina"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
-text = "Vertical Slice Prototype"
+text = "Narrative Vertical Slice"
 horizontal_alignment = 1
 
 [node name="NewGameButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
-text = "New Game"
+text = "New Investigation"
 
 [node name="SettingsButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -89,6 +89,35 @@ max_value = 1.5
 step = 0.05
 value = 1.0
 
+[node name="CameraFovLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+text = "Camera FOV"
+
+[node name="CameraFovSlider" type="HSlider" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+min_value = 55.0
+max_value = 95.0
+step = 1.0
+value = 70.0
+
+[node name="UiScaleLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+text = "UI Scale"
+
+[node name="UiScaleSlider" type="HSlider" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+min_value = 0.8
+max_value = 1.35
+step = 0.05
+value = 1.0
+
+[node name="LanguageLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+text = "Language"
+
+[node name="LanguageOption" type="OptionButton" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+
 [node name="AudioLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
 layout_mode = 2
 text = "Audio"
@@ -125,5 +154,5 @@ value = -6.0
 
 [node name="Status" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
-text = "Open Settings before New Game if needed."
+text = "Tune settings, then start the investigation."
 horizontal_alignment = 1

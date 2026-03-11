@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://d4x5jx1p48rrf"]
+[gd_scene load_steps=23 format=3 uid="uid://e1apw7s9n4lrt"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_player"]
@@ -218,7 +218,7 @@ text = "Inventory: (empty)"
 text = "Quest: Loot chest and defeat NPC"
 
 [node name="Story" type="Label" parent="CanvasLayer/HUD/TutorialPanel/TutorialVBox"]
-text = "Story: Arrival"
+text = "Story: Prudina Center"
 
 [node name="Dialogue" type="Label" parent="CanvasLayer/HUD/TutorialPanel/TutorialVBox"]
 text = ""
