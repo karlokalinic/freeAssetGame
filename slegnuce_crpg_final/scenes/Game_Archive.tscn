@@ -1,0 +1,248 @@
+[gd_scene load_steps=23 format=3 uid="uid://bq0uj0m3x2arc"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_player"]
+[ext_resource type="PackedScene" path="res://snow_town.glb" id="3_env"]
+[ext_resource type="PackedScene" path="res://sara_-_lod_lady_character.glb" id="4_player_model"]
+[ext_resource type="PackedScene" path="res://business_man.glb" id="5_npc_model"]
+[ext_resource type="Script" path="res://scripts/game/hud_controller.gd" id="6_hud"]
+[ext_resource type="Script" path="res://scripts/game/idle_bob.gd" id="7_bob"]
+[ext_resource type="PackedScene" path="res://nora_-_lod_lady_character.glb" id="8_journalist_model"]
+[ext_resource type="PackedScene" path="res://paper_tablet.glb" id="9_evidence_model"]
+[ext_resource type="PackedScene" path="res://church.glb" id="10_gate_model"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 2
+background_color = Color(0.06, 0.08, 0.12, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.48, 0.56, 0.7, 1)
+ambient_light_energy = 1.1
+fog_enabled = true
+fog_light_color = Color(0.57, 0.68, 0.85, 1)
+fog_density = 0.006
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(36, 0.2, 36)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1"]
+size = Vector2(36, 36)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
+radius = 0.35
+height = 1.2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2"]
+size = Vector3(0.8, 1.6, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3"]
+size = Vector3(1.2, 0.8, 0.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2"]
+size = Vector3(1.2, 0.8, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+albedo_color = Color(0.45, 0.28, 0.12, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4"]
+size = Vector3(0.8, 1.4, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5"]
+size = Vector3(1.0, 1.0, 1.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6"]
+size = Vector3(2.4, 2.0, 1.2)
+
+[node name="Game" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="EnvironmentModel" parent="World" instance=ExtResource("3_env")]
+transform = Transform3D(0.14, 0, 0, 0, 0.14, 0, 0, 0, 0.14, 0, 0, -8)
+
+[node name="TownHallVisual" parent="World" instance=ExtResource("10_gate_model")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 10, 0.2, -9)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.92388, -0.382683, 0, 0.270598, 0.653281, 0.707107, -0.270598, -0.653281, 0.707107, 0, 8, 0)
+light_energy = 2.6
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("PlaneMesh_1")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+script = ExtResource("2_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_1")
+
+[node name="PlayerVisual" parent="Player" instance=ExtResource("4_player_model")]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, -0.9, 0)
+
+[node name="NPC" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.8, -3)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NPC"]
+shape = SubResource("BoxShape3D_2")
+
+[node name="NpcVisual" parent="NPC" instance=ExtResource("5_npc_model")]
+script = ExtResource("7_bob")
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, -0.8, 0)
+
+[node name="Label3D" type="Label3D" parent="NPC"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 1.7, 0)
+text = "Guard (RMB)"
+billboard = 1
+
+[node name="JournalistNPC" type="StaticBody3D" parent="."]
+transform = Transform3D(0.955337, 0, -0.29552, 0, 1, 0, 0.29552, 0, 0.955337, -5, 0.8, -4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="JournalistNPC"]
+shape = SubResource("BoxShape3D_4")
+
+[node name="JournalistVisual" parent="JournalistNPC" instance=ExtResource("8_journalist_model")]
+script = ExtResource("7_bob")
+transform = Transform3D(0.36, 0, 0, 0, 0.36, 0, 0, 0, 0.36, 0, -0.9, 0)
+
+[node name="Label3D" type="Label3D" parent="JournalistNPC"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 1.8, 0)
+text = "Iva (RMB)"
+billboard = 1
+
+[node name="LootChest" type="StaticBody3D" parent="."]
+script = ExtResource("7_bob")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.4, -2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LootChest"]
+shape = SubResource("BoxShape3D_3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LootChest"]
+mesh = SubResource("BoxMesh_2")
+surface_material_override/0 = SubResource("StandardMaterial3D_1")
+
+[node name="Label3D" type="Label3D" parent="LootChest"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 1.1, 0)
+text = "Chest (RMB)"
+billboard = 1
+
+[node name="EvidenceSpot" type="StaticBody3D" parent="."]
+transform = Transform3D(0.980067, 0, 0.198669, 0, 1, 0, -0.198669, 0, 0.980067, 1.4, 0.35, -6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EvidenceSpot"]
+shape = SubResource("BoxShape3D_5")
+
+[node name="EvidenceVisual" parent="EvidenceSpot" instance=ExtResource("9_evidence_model")]
+transform = Transform3D(0.42, 0, 0, 0, 0.42, 0, 0, 0, 0.42, 0, 0, 0)
+
+[node name="Label3D" type="Label3D" parent="EvidenceSpot"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 1.3, 0)
+text = "Water Sample (RMB)"
+billboard = 1
+
+[node name="TownHallDoor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.8, 1.1, -7.6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TownHallDoor"]
+shape = SubResource("BoxShape3D_6")
+
+[node name="Label3D" type="Label3D" parent="TownHallDoor"]
+transform = Transform3D(1, 0, 0, 0, 0.939693, -0.34202, 0, 0.34202, 0.939693, 0, 1.8, 0)
+text = "Town Hall (RMB)"
+billboard = 1
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.788011, -0.615662, 0, 0.615662, 0.788011, 0, 12, 12)
+current = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="CanvasLayer"]
+script = ExtResource("6_hud")
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 860.0
+offset_bottom = 340.0
+mouse_filter = 2
+
+[node name="MiniHint" type="Label" parent="CanvasLayer/HUD"]
+text = "TAB: Show Tutorial / HUD"
+
+[node name="ExpandButton" type="Button" parent="CanvasLayer/HUD"]
+offset_top = 24.0
+offset_right = 140.0
+offset_bottom = 52.0
+text = "Show Tutorial"
+
+[node name="TutorialPanel" type="PanelContainer" parent="CanvasLayer/HUD"]
+visible = false
+offset_top = 58.0
+offset_right = 820.0
+offset_bottom = 330.0
+
+[node name="TutorialVBox" type="VBoxContainer" parent="CanvasLayer/HUD/TutorialPanel"]
+
+[node name="TopActions" type="HBoxContainer" parent="CanvasLayer/HUD/TutorialPanel/TutorialVBox"]
+
+[node name="CollapseButton" type="Button" parent="CanvasLayer/HUD/TutorialPanel/TutorialVBox/TopActions"]
+text = "Hide Tutorial"
+
+[node name="ClearMsgButton" type="Button" parent="CanvasLayer/HUD/TutorialPanel/TutorialVBox/TopActions"]
+text = "Clear Msg"
+
+[node name="DragHint" type="Label" parent="CanvasLayer/HUD/TutorialPanel/TutorialVBox/TopActions"]
+text = "Drag panel"
+
+[node name="Instructions" type="Label" parent="CanvasLayer/HUD/TutorialPanel/TutorialVBox"]
+text = "LMB Move | RMB Interact | L Language | H Toggle HUD | C Clear | F5/F9 Save/Load | R Reset"
+
+[node name="PlayerHP" type="Label" parent="CanvasLayer/HUD/TutorialPanel/TutorialVBox"]
+text = "Player HP: 100"
+
+[node name="NpcHP" type="Label" parent="CanvasLayer/HUD/TutorialPanel/TutorialVBox"]
+text = "NPC HP: 100"
+
+[node name="Inventory" type="Label" parent="CanvasLayer/HUD/TutorialPanel/TutorialVBox"]
+text = "Inventory: (empty)"
+
+[node name="Quest" type="Label" parent="CanvasLayer/HUD/TutorialPanel/TutorialVBox"]
+text = "Quest: Loot chest and defeat NPC"
+
+[node name="Story" type="Label" parent="CanvasLayer/HUD/TutorialPanel/TutorialVBox"]
+text = "Story: Archive District"
+
+[node name="Dialogue" type="Label" parent="CanvasLayer/HUD/TutorialPanel/TutorialVBox"]
+text = ""
+autowrap_mode = 2
+
+[node name="ChoicePanel" type="PanelContainer" parent="CanvasLayer"]
+visible = false
+offset_left = 460.0
+offset_top = 190.0
+offset_right = 890.0
+offset_bottom = 410.0
+
+[node name="ChoiceVBox" type="VBoxContainer" parent="CanvasLayer/ChoicePanel"]
+theme_override_constants/separation = 6
+
+[node name="ChoiceTitle" type="Label" parent="CanvasLayer/ChoicePanel/ChoiceVBox"]
+text = "Narrative Choice"
+autowrap_mode = 2
+
+[node name="ChoiceA" type="Button" parent="CanvasLayer/ChoicePanel/ChoiceVBox"]
+text = "Choice A"
+
+[node name="ChoiceB" type="Button" parent="CanvasLayer/ChoicePanel/ChoiceVBox"]
+text = "Choice B"
+
+[node name="ChoiceC" type="Button" parent="CanvasLayer/ChoicePanel/ChoiceVBox"]
+text = "Choice C"

@@ -14,6 +14,13 @@ Playable narrative-investigation prototype inspired by **Slegnuće: Raspuklina**
   - Town Hall resolution trigger (multiple ending outcomes)
 - Story choices that branch into legal/civic/ambiguous ending flavor text.
 - Save/load support for both gameplay state and branching values.
+- Added district scene variants for production organization:
+  - `Game_Archive.tscn`
+  - `Game_Clinic.tscn`
+  - `Game_Industrial.tscn`
+  - `Game_PrudinaCenter.tscn`
+  - `Game_Riverbank.tscn`
+- Added `scripts/scene_hub.gd` for safe scene routing and chapter sequencing.
 - Croatian/English text support for all core interactions.
 
 ## Controls
