@@ -1,0 +1,68 @@
+[gd_scene load_steps=2 format=3 uid="uid://scenehub"]
+
+[ext_resource type="Script" path="res://scripts/scene_hub.gd" id="1_hub"]
+
+[node name="SceneHub" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_hub")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.04, 0.05, 0.07, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = -40.0
+offset_bottom = -40.0
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Vertical Slice Scene Hub"
+
+[node name="Hint" type="Label" parent="MarginContainer/VBox"]
+layout_mode = 2
+text = "Choose one of 5 functional scenes"
+
+[node name="PrudinaCenter" type="Button" parent="MarginContainer/VBox"]
+layout_mode = 2
+text = "1) Prudina Center"
+
+[node name="Clinic" type="Button" parent="MarginContainer/VBox"]
+layout_mode = 2
+text = "2) Clinic Wing"
+
+[node name="Archive" type="Button" parent="MarginContainer/VBox"]
+layout_mode = 2
+text = "3) Archive District"
+
+[node name="Riverbank" type="Button" parent="MarginContainer/VBox"]
+layout_mode = 2
+text = "4) Riverbank"
+
+[node name="Industrial" type="Button" parent="MarginContainer/VBox"]
+layout_mode = 2
+text = "5) Industrial Yard"
+
+[node name="Back" type="Button" parent="MarginContainer/VBox"]
+layout_mode = 2
+text = "Back to Main Menu"
+
+[node name="Status" type="Label" parent="MarginContainer/VBox"]
+layout_mode = 2
+text = ""

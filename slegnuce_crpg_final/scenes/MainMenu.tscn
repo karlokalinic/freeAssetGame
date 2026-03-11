@@ -1,0 +1,129 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmenu"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_menu"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.06, 0.08, 0.11, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "slegnuce_crpg_final"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Vertical Slice Prototype"
+horizontal_alignment = 1
+
+[node name="NewGameButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "New Game"
+
+[node name="SettingsButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[node name="SettingsPanel" type="PanelContainer" parent="CenterContainer/PanelContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="SettingsVBox" type="VBoxContainer" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel"]
+layout_mode = 2
+
+[node name="GraphicsLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+text = "Graphics"
+
+[node name="FullscreenCheck" type="CheckBox" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="BorderlessCheck" type="CheckBox" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+text = "Borderless"
+
+[node name="VsyncCheck" type="CheckBox" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+text = "VSync"
+button_pressed = true
+
+[node name="RenderScaleLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+text = "3D Render Scale"
+
+[node name="RenderScaleSlider" type="HSlider" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+min_value = 0.5
+max_value = 1.5
+step = 0.05
+value = 1.0
+
+[node name="AudioLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+text = "Audio"
+
+[node name="MasterVolumeLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+text = "Master Volume"
+
+[node name="MasterVolumeSlider" type="HSlider" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+min_value = -40.0
+max_value = 0.0
+value = -6.0
+
+[node name="EnvironmentVolumeLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+text = "Environment Volume"
+
+[node name="EnvironmentVolumeSlider" type="HSlider" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+min_value = -40.0
+max_value = 0.0
+value = -8.0
+
+[node name="SfxVolumeLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+text = "SFX Volume"
+
+[node name="SfxVolumeSlider" type="HSlider" parent="CenterContainer/PanelContainer/VBoxContainer/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+min_value = -40.0
+max_value = 0.0
+value = -6.0
+
+[node name="Status" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Open Settings before New Game if needed."
+horizontal_alignment = 1
